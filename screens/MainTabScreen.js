@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,14 +18,14 @@ const DetailsStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTabScreen = () => (
-  <Tab.Navigator initialRouteName="Home" activeColor="#fff">
+  <Tab.Navigator initialRouteName="Notifications" activeColor="#fff">
     <Tab.Screen
       name="Notifications"
       component={DetailsStackScreen}
       options={{
         tabBarLabel: 'Notification',
         tabBarColor: '#1f65ff',
-        tabBarIcon: ({color}) => (
+        tabBarIcon: ({ color }) => (
           <Icon name="ios-notifications" color={color} size={26} />
         ),
       }}
@@ -36,7 +36,7 @@ const MainTabScreen = () => (
       options={{
         tabBarLabel: 'upload',
         tabBarColor: '#694fad',
-        tabBarIcon: ({color}) => (
+        tabBarIcon: ({ color }) => (
           <AntDesign name="cloudupload" color={color} size={26} />
         ),
       }}
@@ -48,7 +48,7 @@ const MainTabScreen = () => (
       options={{
         tabBarLabel: 'Text',
         tabBarColor: '#009387',
-        tabBarIcon: ({color}) => <Icon name="text" color={color} size={26} />,
+        tabBarIcon: ({ color }) => <Icon name="text" color={color} size={26} />,
       }}
     />
 
@@ -58,7 +58,7 @@ const MainTabScreen = () => (
       options={{
         tabBarLabel: 'Calculator',
         tabBarColor: '#d02860',
-        tabBarIcon: ({color}) => (
+        tabBarIcon: ({ color }) => (
           <Entypo name="calculator" color={color} size={26} />
         ),
       }}
@@ -68,7 +68,7 @@ const MainTabScreen = () => (
 
 export default MainTabScreen;
 
-const HomeStackScreen = ({navigation}) => (
+const HomeStackScreen = ({ navigation }) => (
   <HomeStack.Navigator
     screenOptions={{
       headerShown: false,
@@ -82,7 +82,7 @@ const HomeStackScreen = ({navigation}) => (
   </HomeStack.Navigator>
 );
 
-const DetailsStackScreen = ({navigation}) => (
+const DetailsStackScreen = ({ navigation }) => (
   <DetailsStack.Navigator
     screenOptions={{
       headerShown: false,
