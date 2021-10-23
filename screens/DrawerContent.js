@@ -15,8 +15,8 @@ import {
 } from 'react-native-paper';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import {AuthContext} from '../components/context';
 
@@ -59,11 +59,11 @@ export function DrawerContent(props) {
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({color, size}) => (
-                <Icon name="text" color={color} size={size} />
+                <Icon name="ios-notifications" color={color} size={size} />
               )}
-              label="Text"
+              label="Notification"
               onPress={() => {
-                props.navigation.navigate('Home');
+                props.navigation.navigate('Notifications');
               }}
             />
             <DrawerItem
