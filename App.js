@@ -1,15 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-shadow */
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, {useEffect} from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import {View, Alert, ActivityIndicator} from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -36,6 +30,9 @@ import RootStackScreen from './screens/RootStackScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -43,6 +40,51 @@ const App = () => {
   // const [userToken, setUserToken] = React.useState(null);
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [initializing, setInitializing] = React.useState(true);
+  const [user, setUser] = React.useState();
+
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+    }
+  }
+
+  async function registerAppWithFCM() {
+    await messaging().registerDeviceForRemoteMessages();
+  }
+
+  useEffect(() => {
+    registerAppWithFCM();
+    requestUserPermission();
+    messaging().setAutoInitEnabled(true);
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      Alert.alert('Message handled in the background!', remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
 
   const initialLoginState = {
     isLoading: true,
@@ -163,7 +205,7 @@ const App = () => {
     }, 1000);
   }, []);
 
-  if (loginState.isLoading) {
+  if (initializing) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
@@ -174,7 +216,7 @@ const App = () => {
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
-          {loginState.userToken !== null ? (
+          {user ? (
             <Drawer.Navigator
               drawerContent={props => <DrawerContent {...props} />}>
               <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />

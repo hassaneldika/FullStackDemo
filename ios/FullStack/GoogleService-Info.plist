@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>432267647981-6af0u2qpi8403kas082hbkedfv1m09o5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.432267647981-6af0u2qpi8403kas082hbkedfv1m09o5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCgj0p_b_qhW0dWgqqOoEuC88ss6dWxBkg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>432267647981</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fullstack</string>
+	<key>PROJECT_ID</key>
+	<string>fulldemorn</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fulldemorn.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:432267647981:ios:94763601c516148a9625e4</string>
+</dict>
+</plist>

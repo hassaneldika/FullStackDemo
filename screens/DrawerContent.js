@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
@@ -15,13 +16,26 @@ import {
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {AuthContext} from '../components/context';
+
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export function DrawerContent(props) {
   const paperTheme = useTheme();
 
   const {signOut, toggleTheme} = React.useContext(AuthContext);
+
+  const onSignOut = () => {
+    auth()
+      .signOut()
+      .then(async () => {
+        await AsyncStorage.removeItem('user');
+        console.log('User signed out!');
+      });
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -40,38 +54,23 @@ export function DrawerContent(props) {
                 <Caption style={styles.caption}>@Name</Caption>
               </View>
             </View>
-
-            <View style={styles.row}>
-              <View style={styles.section}>
-                <Paragraph style={[styles.paragraph, styles.caption]}>
-                  80
-                </Paragraph>
-                <Caption style={styles.caption}>Following</Caption>
-              </View>
-              <View style={styles.section}>
-                <Paragraph style={[styles.paragraph, styles.caption]}>
-                  100
-                </Paragraph>
-                <Caption style={styles.caption}>Followers</Caption>
-              </View>
-            </View>
           </View>
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={({color, size}) => (
-                <Icon name="home-outline" color={color} size={size} />
+                <Icon name="text" color={color} size={size} />
               )}
-              label="Home"
+              label="Text"
               onPress={() => {
                 props.navigation.navigate('Home');
               }}
             />
             <DrawerItem
               icon={({color, size}) => (
-                <Icon name="account-outline" color={color} size={size} />
+                <AntDesign name="cloudupload" color={color} size={size} />
               )}
-              label="Profile"
+              label="Upload"
               onPress={() => {
                 props.navigation.navigate('Profile');
               }}
@@ -125,9 +124,7 @@ export function DrawerContent(props) {
             <Icon name="exit-to-app" color={color} size={size} />
           )}
           label="Sign Out"
-          onPress={() => {
-            signOut();
-          }}
+          onPress={onSignOut}
         />
       </Drawer.Section>
     </View>

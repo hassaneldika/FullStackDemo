@@ -1,6 +1,7 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -17,6 +18,9 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SignInScreen = ({navigation}) => {
   const [data, setData] = React.useState({
@@ -70,6 +74,30 @@ const SignInScreen = ({navigation}) => {
       ...data,
       confirm_secureTextEntry: !data.confirm_secureTextEntry,
     });
+  };
+
+  const onSignUp = () => {
+    if (data.password === data.confirm_password && data.username.length > 6) {
+      auth()
+        .createUserWithEmailAndPassword(data.username, data.password)
+        .then(async response => {
+          if (response.user) {
+            await AsyncStorage.setItem('user', JSON.stringify(response));
+            navigation.navigate('HomeDrawer');
+          }
+          console.log('User account created & signed in!');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            alert('That email address is already in use!');
+            console.log('That email address is already in use!');
+          }
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+          }
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -164,7 +192,7 @@ const SignInScreen = ({navigation}) => {
             </Text>
           </View>
           <View style={styles.button}>
-            <TouchableOpacity style={styles.signIn} onPress={() => {}}>
+            <TouchableOpacity style={styles.signIn} onPress={onSignUp}>
               <LinearGradient
                 colors={['#08d4c4', '#01ab9d']}
                 style={styles.signIn}>
