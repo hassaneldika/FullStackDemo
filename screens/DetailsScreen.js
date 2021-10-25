@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
-import React, {useEffect, useState} from 'react';
-import {View, Text, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
-const DetailsScreen = ({navigation}) => {
+const DetailsScreen = ({ navigation }) => {
   const [fcm, setFcm] = useState('');
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const DetailsScreen = ({navigation}) => {
     if (fcm) {
       fcmAPI()
         .then(res => {
-          alert(JSON.stringify(res));
+          // alert(JSON.stringify(res));
         })
         .catch(e => console.log(e));
     }

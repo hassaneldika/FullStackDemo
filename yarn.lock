@@ -1045,6 +1045,11 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@notifee/react-native@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-3.0.2.tgz#6ae0b64091467784924d662211f5174b9c39f952"
+  integrity sha512-Idfc9YnaLsxwpPyBn3Nbdn9UOWwlJq7PrUe0MFeuZnYr0+5n+JhuYLg7CY9/jqUhnjYGz1RdzVCB6Ie7uxle8g==
+
 "@react-native-community/async-storage@^1.12.1":
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
@@ -5680,6 +5685,11 @@ react-native-codegen@^0.0.7:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-exception-handler@^2.10.10:
+  version "2.10.10"
+  resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-2.10.10.tgz#b6bfe2b7e6ea4a4deb1f518f48ce2ee1d4843497"
+  integrity sha512-otAXGoZDl1689OoUJWN/rXxVbdoZ3xcmyF1uq/CsizdLwwyZqVGd6d+p/vbYvnF996FfEyAEBnHrdFxulTn51w==
 
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"

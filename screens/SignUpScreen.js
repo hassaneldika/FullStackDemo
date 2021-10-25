@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -22,68 +22,49 @@ import Feather from 'react-native-vector-icons/Feather';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const SignInScreen = ({navigation}) => {
-  const [data, setData] = React.useState({
-    username: '',
-    password: '',
-    confirm_password: '',
-    check_textInputChange: false,
-    secureTextEntry: true,
-    confirm_secureTextEntry: true,
-  });
+const SignInScreen = ({ navigation }) => {
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [check_textInputChange, setCheck_textInputChange] = useState('')
+  const [secureTextEntry, setSecureTextEntry] = useState('')
+  const [confirm_password, setConfirm_password] = useState('')
+  const [confirm_secureTextEntry, setConfirm_secureTextEntry] = useState(true)
 
   const textInputChange = val => {
     if (val.length !== 0) {
-      setData({
-        ...data,
-        username: val,
-        check_textInputChange: true,
-      });
+      setUsername(val)
+      setCheck_textInputChange(true)
     } else {
-      setData({
-        ...data,
-        username: val,
-        check_textInputChange: false,
-      });
+      setUsername(val)
+      setCheck_textInputChange(false)
     }
   };
 
   const handlePasswordChange = val => {
-    setData({
-      ...data,
-      password: val,
-    });
+    setPassword(val)
   };
 
   const handleConfirmPasswordChange = val => {
-    setData({
-      ...data,
-      confirm_password: val,
-    });
+    setConfirm_password(val)
   };
 
   const updateSecureTextEntry = () => {
-    setData({
-      ...data,
-      secureTextEntry: !data.secureTextEntry,
-    });
+    setSecureTextEntry(prev => !prev)
   };
 
   const updateConfirmSecureTextEntry = () => {
-    setData({
-      ...data,
-      confirm_secureTextEntry: !data.confirm_secureTextEntry,
-    });
+    setConfirm_secureTextEntry(prev => !prev)
   };
 
   const onSignUp = () => {
-    if (data.password === data.confirm_password && data.username.length > 6) {
+    if (password === confirm_password && username.length > 6) {
       auth()
-        .createUserWithEmailAndPassword(data.username, data.password)
+        .createUserWithEmailAndPassword(username, password)
         .then(async response => {
           if (response.user) {
             await AsyncStorage.setItem('user', JSON.stringify(response));
-            navigation.navigate('HomeDrawer');
+            // navigation.navigate('HomeDrawer');
           }
           console.log('User account created & signed in!');
         })
@@ -112,12 +93,13 @@ const SignInScreen = ({navigation}) => {
           <View style={styles.action}>
             <FontAwesome name="user-o" color="#05375a" size={20} />
             <TextInput
+              keyboardType='email-address'
               placeholder="Your Username"
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={val => textInputChange(val)}
             />
-            {data.check_textInputChange ? (
+            {check_textInputChange ? (
               <Animatable.View animation="bounceIn">
                 <Feather name="check-circle" color="green" size={20} />
               </Animatable.View>
@@ -137,13 +119,13 @@ const SignInScreen = ({navigation}) => {
             <Feather name="lock" color="#05375a" size={20} />
             <TextInput
               placeholder="Your Password"
-              secureTextEntry={data.secureTextEntry ? true : false}
+              secureTextEntry={secureTextEntry ? true : false}
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={val => handlePasswordChange(val)}
             />
             <TouchableOpacity onPress={updateSecureTextEntry}>
-              {data.secureTextEntry ? (
+              {secureTextEntry ? (
                 <Feather name="eye-off" color="grey" size={20} />
               ) : (
                 <Feather name="eye" color="grey" size={20} />
@@ -164,13 +146,13 @@ const SignInScreen = ({navigation}) => {
             <Feather name="lock" color="#05375a" size={20} />
             <TextInput
               placeholder="Confirm Your Password"
-              secureTextEntry={data.confirm_secureTextEntry ? true : false}
+              secureTextEntry={confirm_secureTextEntry ? true : false}
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={val => handleConfirmPasswordChange(val)}
             />
             <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
-              {data.secureTextEntry ? (
+              {secureTextEntry ? (
                 <Feather name="eye-off" color="grey" size={20} />
               ) : (
                 <Feather name="eye" color="grey" size={20} />
@@ -181,12 +163,12 @@ const SignInScreen = ({navigation}) => {
             <Text style={styles.color_textPrivate}>
               By signing up you agree to our
             </Text>
-            <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>
+            <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>
               {' '}
               Terms of service
             </Text>
             <Text style={styles.color_textPrivate}> and</Text>
-            <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>
+            <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}>
               {' '}
               Privacy policy
             </Text>

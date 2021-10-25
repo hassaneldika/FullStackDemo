@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
   useTheme,
   Avatar,
@@ -14,14 +14,14 @@ import {
   TouchableRipple,
   Switch,
 } from 'react-native-paper';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {AuthContext} from '../components/context';
+import { AuthContext } from '../components/context';
 
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -29,30 +29,33 @@ import AsyncStorage from '@react-native-community/async-storage';
 export function DrawerContent(props) {
   const paperTheme = useTheme();
 
-  const {signOut, toggleTheme} = React.useContext(AuthContext);
+  const { toggleTheme } = React.useContext(AuthContext);
 
   const onSignOut = () => {
-    auth()
-      .signOut()
-      .then(async () => {
-        await AsyncStorage.removeItem('user');
-        console.log('User signed out!');
-      });
+    try {
+      auth()
+        .signOut()
+        .then(async () => {
+          // await AsyncStorage.removeItem('user');
+          console.log('User signed out!');
+        });
+    } catch (error) {
+    }
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{flexDirection: 'row', marginTop: 15}}>
+            <View style={{ flexDirection: 'row', marginTop: 15 }}>
               <Avatar.Image
                 source={{
                   uri: 'https://api.adorable.io/avatars/50/abott@adorable.png',
                 }}
                 size={50}
               />
-              <View style={{marginLeft: 15, flexDirection: 'column'}}>
+              <View style={{ marginLeft: 15, flexDirection: 'column' }}>
                 <Title style={styles.title}>Name</Title>
                 <Caption style={styles.caption}>@Name</Caption>
               </View>
@@ -61,7 +64,7 @@ export function DrawerContent(props) {
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
-              icon={({color, size}) => (
+              icon={({ color, size }) => (
                 <MaterialIcons name="notifications-none" color={color} size={size} />
               )}
               label="Notification"
@@ -70,7 +73,7 @@ export function DrawerContent(props) {
               }}
             />
             <DrawerItem
-              icon={({color, size}) => (
+              icon={({ color, size }) => (
                 <AntDesign name="cloudupload" color={color} size={size} />
               )}
               label="Upload"
@@ -79,7 +82,7 @@ export function DrawerContent(props) {
               }}
             />
             <DrawerItem
-              icon={({color, size}) => (
+              icon={({ color, size }) => (
                 <Icon name="bookmark-outline" color={color} size={size} />
               )}
               label="Bookmarks"
@@ -88,7 +91,7 @@ export function DrawerContent(props) {
               }}
             />
             <DrawerItem
-              icon={({color, size}) => (
+              icon={({ color, size }) => (
                 <Ionicons name="settings-outline" color={color} size={size} />
               )}
               label="Settings"
@@ -97,7 +100,7 @@ export function DrawerContent(props) {
               }}
             />
             <DrawerItem
-              icon={({color, size}) => (
+              icon={({ color, size }) => (
                 <Icon name="account-check-outline" color={color} size={size} />
               )}
               label="Support"
@@ -123,7 +126,7 @@ export function DrawerContent(props) {
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
-          icon={({color, size}) => (
+          icon={({ color, size }) => (
             <Icon name="exit-to-app" color={color} size={size} />
           )}
           label="Sign Out"

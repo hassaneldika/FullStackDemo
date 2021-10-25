@@ -2,14 +2,14 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, {useEffect} from 'react';
-import {View, Alert, ActivityIndicator} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Alert, ActivityIndicator } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
   DarkTheme as NavigationDarkTheme,
 } from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
   Provider as PaperProvider,
@@ -17,14 +17,14 @@ import {
   DarkTheme as PaperDarkTheme,
 } from 'react-native-paper';
 
-import {DrawerContent} from './screens/DrawerContent';
+import { DrawerContent } from './screens/DrawerContent';
 
 import MainTabScreen from './screens/MainTabScreen';
 import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 
-import {AuthContext} from './components/context';
+import { AuthContext } from './components/context';
 
 import RootStackScreen from './screens/RootStackScreen';
 
@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 
 const Drawer = createDrawerNavigator();
 
@@ -44,9 +45,13 @@ const App = () => {
   const [user, setUser] = React.useState();
 
   function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) {
-      setInitializing(false);
+    try {
+      setUser(user);
+      if (initializing) {
+        setInitializing(false);
+      }
+    } catch (error) {
+
     }
   }
 
@@ -76,11 +81,36 @@ const App = () => {
     messaging().setAutoInitEnabled(true);
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      // Create a channel
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+      });
+      // Display a notification
+      await notifee.displayNotification({
+        title: 'Notification Title',
+        body: 'Main body content of the notification',
+        android: {
+          channelId,
+        },
+      });
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      Alert.alert('Message handled in the background!', remoteMessage);
+      // Create a channel
+      const channelId = await notifee.createChannel({
+        id: 'default',
+        name: 'Default Channel',
+      });
+      await notifee.displayNotification({
+        title: 'Notification Title',
+        body: 'Main body content of the notification',
+        android: {
+          channelId,
+        },
+      });
+      // Alert.alert('Message handled in the background!', remoteMessage);
     });
 
     return unsubscribe;
@@ -167,7 +197,7 @@ const App = () => {
           console.log(e);
         }
         // console.log('user token: ', userToken);
-        dispatch({type: 'LOGIN', id: userName, token: userToken});
+        dispatch({ type: 'LOGIN', id: userName, token: userToken });
       },
       signOut: async () => {
         // setUserToken(null);
@@ -177,7 +207,7 @@ const App = () => {
         } catch (e) {
           console.log(e);
         }
-        dispatch({type: 'LOGOUT'});
+        dispatch({ type: 'LOGOUT' });
       },
       signUp: () => {
         // setUserToken('fgkj');
@@ -201,13 +231,13 @@ const App = () => {
         console.log(e);
       }
       // console.log('user token: ', userToken);
-      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
+      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 1000);
   }, []);
 
   if (initializing) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );

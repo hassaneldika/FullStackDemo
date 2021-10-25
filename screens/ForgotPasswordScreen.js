@@ -3,7 +3,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -18,50 +18,39 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import {useTheme} from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 
-const ForgotPasswordScreen = ({navigation}) => {
-  const [data, setData] = React.useState({
-    email: '',
-    isValidEmail: false,
-  });
-  const {colors} = useTheme();
+const ForgotPasswordScreen = ({ navigation }) => {
+
+  const [email, setEmail] = useState('')
+  const [isValidEmail, setIsValidEmail] = useState(false)
+  const [check_textInputChange, setCheck_textInputChange] = useState('')
+
+  const { colors } = useTheme();
 
   const handleValidEmail = val => {
     if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidEmail: true,
-      });
+      setIsValidEmail(true)
     } else {
-      setData({
-        ...data,
-        isValidEmail: false,
-      });
+      setIsValidEmail(false)
     }
-  };
+  }
 
   const textInputChange = val => {
     if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        email: val,
-        isValidEmail: true,
-      });
+      setEmail(val)
+      setIsValidEmail(true)
     } else {
-      setData({
-        ...data,
-        email: val,
-        isValidEmail: false,
-      });
+      setEmail(val)
+      setIsValidEmail(false)
     }
   };
 
   const onSubmit = () => {
-    if (data.isValidEmail) {
+    if (isValidEmail) {
       auth()
-        .sendPasswordResetEmail(data.email)
+        .sendPasswordResetEmail(email)
         .then(res => {
           alert('Email sent');
           setTimeout(() => {
@@ -98,6 +87,7 @@ const ForgotPasswordScreen = ({navigation}) => {
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
+            keyboardType='email-address'
             placeholder="Your Email"
             placeholderTextColor="#666666"
             style={[
@@ -110,7 +100,7 @@ const ForgotPasswordScreen = ({navigation}) => {
             onChangeText={val => textInputChange(val)}
             onEndEditing={e => handleValidEmail(e.nativeEvent.text)}
           />
-          {data.check_textInputChange ? (
+          {check_textInputChange ? (
             <Animatable.View animation="bounceIn">
               <Feather name="check-circle" color="green" size={20} />
             </Animatable.View>
