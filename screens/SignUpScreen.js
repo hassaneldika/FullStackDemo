@@ -93,7 +93,7 @@ const SignInScreen = ({ navigation }) => {
           <View style={styles.action}>
             <FontAwesome name="user-o" color="#05375a" size={20} />
             <TextInput
-              keyboardType='email-address'
+              keyboardType='url'
               placeholder="Your Username"
               style={styles.textInput}
               autoCapitalize="none"
